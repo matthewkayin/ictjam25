@@ -6,20 +6,16 @@ enum Mode {
     CHASE
 }
 
-const PROWL_SPEED: float = 100
+const PROWL_SPEED: float = 200
 const STALK_SPEED: float = 200
 const CHASE_SPEED: float = 400
 const PATH_POINT_DISTANCE_REQUIRED: float = 2.0
 
 @onready var sprite = $sprite
-@onready var tilemap = get_node("../tilemap") 
-
-@export var debug_draw_path: bool = false
-@export var CELL_SIZE: Vector2i = Vector2i(4, 4)
+@onready var nav_agent = $nav_agent
 
 var mode: Mode = Mode.PROWL
 var player = null
-var path = []
 
 func _ready():
     $nav_timer.timeout.connect(on_nav_timer_timeout)
@@ -27,7 +23,7 @@ func _ready():
 func on_nav_timer_timeout():
     if player == null:
         return
-    path = tilemap.pathfind(position, CELL_SIZE, player.position)
+    nav_agent.set_target_position(player.global_position)
 
 func _physics_process(_delta: float) -> void:
     if player == null:
@@ -35,13 +31,8 @@ func _physics_process(_delta: float) -> void:
     if player == null:
         return
 
-    if not path.is_empty():
-        velocity = position.direction_to(path[0]) * get_speed()
-        move_and_slide()
-        if position.distance_to(path[0]) < PATH_POINT_DISTANCE_REQUIRED:
-            path.pop_front()
-    if debug_draw_path:
-        queue_redraw()
+    velocity = global_position.direction_to(nav_agent.get_next_path_position()) * get_speed()
+    move_and_slide()
 
 func on_spear_hit():
     sprite.play("hurt")
@@ -57,10 +48,3 @@ func get_speed() -> float:
         return CHASE_SPEED
     else:
         return 0
-
-func _draw():
-    if debug_draw_path:
-        var previous = position
-        for point in path:
-            draw_line(previous - position, point - position, Color.WHITE)
-            previous = point

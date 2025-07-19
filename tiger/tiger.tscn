@@ -47,8 +47,9 @@ size = Vector2(64, 32)
 
 [node name="tiger" type="CharacterBody2D"]
 texture_filter = 1
+motion_mode = 1
+wall_min_slide_angle = 0.0
 script = ExtResource("1_dc385")
-debug_draw_path = true
 
 [node name="sprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(-2, 0)
@@ -61,3 +62,6 @@ shape = SubResource("RectangleShape2D_pfdrf")
 [node name="nav_timer" type="Timer" parent="."]
 wait_time = 0.5
 autostart = true
+
+[node name="nav_agent" type="NavigationAgent2D" parent="."]
+debug_enabled = true

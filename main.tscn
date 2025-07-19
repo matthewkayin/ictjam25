@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://vai57o0mghdh"]
+[gd_scene load_steps=10 format=3 uid="uid://vai57o0mghdh"]
 
 [ext_resource type="Texture2D" uid="uid://cflmhq5brugov" path="res://tiles.png" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://ceva3l0wtnxma" path="res://player/player.tscn" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://drbn7ugnxlv3t" path="res://tilemap.gd" id="2_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://dljjfsdmxf26j" path="res://tiger/tiger.tscn" id="3_h2yge"]
+[ext_resource type="Texture2D" uid="uid://dh4hvbtl3wlcr" path="res://tree.png" id="4_1bvp3"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_h2yge"]
 texture = ExtResource("1_0xm2m")
@@ -15,6 +16,14 @@ texture = ExtResource("1_0xm2m")
 custom_data_layer_0/name = "blocked"
 custom_data_layer_0/type = 1
 sources/0 = SubResource("TileSetAtlasSource_h2yge")
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_lquwl"]
+vertices = PackedVector2Array(299.75, 395.75, 790.508, 439.758, 10.4297, 440.977, 179.75, 395.75, 7.5625, 10.5078, 179.75, 291.75, 791.227, 11.7266, 299.75, 291.75)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(3, 2, 4, 5), PackedInt32Array(5, 4, 6, 7), PackedInt32Array(7, 6, 1, 0)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-2.5, 0.5, 801.25, 1.75, 800.5, 449.75, 0.5, 451)])
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7mycd"]
+size = Vector2(31, 17.75)
 
 [node name="main" type="Node2D"]
 scale = Vector2(4, 4)
@@ -30,3 +39,21 @@ position = Vector2(177, 136.75)
 
 [node name="tiger" parent="." instance=ExtResource("3_h2yge")]
 position = Vector2(494.25, 169.5)
+
+[node name="nav_mesh" type="NavigationRegion2D" parent="."]
+navigation_polygon = SubResource("NavigationPolygon_lquwl")
+
+[node name="tree" type="StaticBody2D" parent="nav_mesh"]
+texture_filter = 1
+position = Vector2(239.75, 343.75)
+
+[node name="Sprite2D" type="Sprite2D" parent="nav_mesh/tree"]
+texture = ExtResource("4_1bvp3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="nav_mesh/tree"]
+position = Vector2(0.25, 23.125)
+shape = SubResource("RectangleShape2D_7mycd")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="nav_mesh/tree"]
+vertices = PackedVector2Array(-50, -42, 50, -42, 50, 42, -50, 42)
+affect_navigation_mesh = true
