@@ -22,6 +22,7 @@ const LOOK_DISTANCE: float = 180
 
 @onready var sprite = $sprite
 @onready var camera = $camera
+@onready var tilemap = get_node("../tilemap")
 
 @onready var hurtbox_areas = [
     $hurtbox_top,
@@ -135,3 +136,7 @@ func get_speed() -> float:
 func on_hurtbox_body_entered(body: Node2D) -> void:
     if body.has_method("on_spear_hit"):
         body.on_spear_hit()
+
+func is_in_tall_grass() -> bool:
+    var cell = tilemap.local_to_map(position)
+    return tilemap.get_cell_tile_data(0, cell).get_custom_data("tall_grass")

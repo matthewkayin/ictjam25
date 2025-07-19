@@ -65,3 +65,13 @@ autostart = true
 
 [node name="nav_agent" type="NavigationAgent2D" parent="."]
 debug_enabled = true
+
+[node name="sight_raycasts" type="Node" parent="."]
+
+[node name="1" type="RayCast2D" parent="sight_raycasts"]
+position = Vector2(-16, 0)
+
+[node name="2" type="RayCast2D" parent="sight_raycasts"]
+
+[node name="3" type="RayCast2D" parent="sight_raycasts"]
+position = Vector2(16, 0)
