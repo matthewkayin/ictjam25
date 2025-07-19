@@ -1,28 +1,12 @@
 extends CharacterBody2D
 
-enum Mode {
-    PROWL,
-    STALK,
-    CHASE
-}
-
 const PROWL_SPEED: float = 100
-const STALK_SPEED: float = 200
 const CHASE_SPEED: float = 400
-const TALL_GRASS_SIGHT_RANGE: float = 64
-const NOISE_HEARING_RANGE: float = 256
-const LOST_SIGHT_DURATION: float = 1.0
 
 @onready var sprite = $sprite
 @onready var nav_agent = $nav_agent
 @onready var player = get_node("../player")
-@onready var sight_cones = [
-    $sight_cone_up,
-    $sight_cone_right,
-    $sight_cone_down,
-    $sight_cone_left
-]
-@onready var lost_sight_timer = $lost_sight_timer
+@onready var raycast_anchor = $raycasts
 
 enum FacingDirection {
     UP,
@@ -31,46 +15,52 @@ enum FacingDirection {
     LEFT
 }
 
-var mode: Mode = Mode.PROWL
-var point_of_interest: Vector2
+var has_seen_player = false
 var facing_direction = FacingDirection.DOWN
+var point_of_interest = null
+var raycasts = []
 
 func _ready():
     $nav_timer.timeout.connect(on_nav_timer_timeout)
     player.made_noise.connect(on_player_made_noise)
-    $lost_sight_timer.timeout.connect(on_lost_sight_timer_timeout)
+
+    for angle in range(-30, 30, 5):
+        var raycast = RayCast2D.new()
+        raycast.target_position.y = 256
+        raycast.rotation = deg_to_rad(angle)
+        raycast_anchor.add_child(raycast)
+        raycasts.push_back(raycast)
+
+func can_see_player() -> bool:
+    for raycast in raycasts:
+        if raycast.is_colliding() and raycast.get_collider() == player and not player.is_in_tall_grass():
+            return true
+    
+    return false
 
 func on_nav_timer_timeout():
-    nav_agent.set_target_position(point_of_interest)
+    if has_seen_player:
+        nav_agent.set_target_position(player.global_position)
+    elif point_of_interest != null:
+        nav_agent.set_target_position(point_of_interest)
 
 func on_player_made_noise(noise_position: Vector2, noise_loudness: int):
-    assert(noise_loudness > 0)
+    const NOISE_HEARING_RANGE: float = 256
     var noise_distance = global_position.distance_to(noise_position)
     var hearing_range = NOISE_HEARING_RANGE * noise_loudness
     # If it's too far away, you can't hear it
     if noise_distance > hearing_range:
         return
     # If it's kinda loud and close, then chase right away
-    if noise_loudness > 1 and noise_distance < (NOISE_HEARING_RANGE * (noise_loudness - 1)):
-        mode = Mode.CHASE
+    if noise_loudness == 2 and noise_distance < NOISE_HEARING_RANGE: 
+        has_seen_player = true
         return
     # Otherwise, stalk
     point_of_interest = noise_position
-    if mode == Mode.PROWL:
-        mode = Mode.STALK
 
 func _physics_process(_delta: float) -> void:
-    # Look for player
-    if (mode == Mode.PROWL or mode == Mode.STALK) and can_see_player():
-        mode = Mode.CHASE
-    elif mode == Mode.CHASE:
-        if can_see_player():
-            point_of_interest = player.global_position
-            lost_sight_timer.stop()
-        elif lost_sight_timer.is_stopped():
-            lost_sight_timer.start(LOST_SIGHT_DURATION)
-    elif mode == Mode.STALK and nav_agent.is_navigation_finished():
-        mode = Mode.PROWL
+    if can_see_player():
+        has_seen_player = true
 
     velocity = global_position.direction_to(nav_agent.get_next_path_position()) * get_speed()
     move_and_slide()
@@ -87,38 +77,16 @@ func _physics_process(_delta: float) -> void:
         else:
             facing_direction = FacingDirection.UP
 
+    var raycast_angles = [180, 270, 0, 90]
+    raycast_anchor.rotation_degrees = raycast_angles[facing_direction]
 
-    if mode == Mode.PROWL:
-        sprite.play("prowl")
-    elif mode == Mode.STALK:
-        sprite.play("stalk")
-    elif mode == Mode.CHASE:
+    if has_seen_player:
         sprite.play("chase")
-
-    $eyes.visible = can_see_player()
-
-func can_see_player() -> bool:
-    if not sight_cones[facing_direction].overlaps_body(player):
-        return false
-    if player.is_in_tall_grass() and position.distance_to(player.position) > TALL_GRASS_SIGHT_RANGE:
-        return false
-    return true
-
-func on_lost_sight_timer_timeout():
-    if mode == Mode.CHASE and not can_see_player() and nav_agent.is_navigation_finished():
-        mode = Mode.STALK
-
-func on_spear_hit():
-    sprite.play("hurt")
-    await get_tree().create_timer(0.5).timeout
-    sprite.play("idle")
+    else:
+        sprite.play("prowl")
 
 func get_speed() -> float:
-    if mode == Mode.PROWL:
-        return PROWL_SPEED
-    elif mode == Mode.STALK:
-        return STALK_SPEED
-    elif mode == Mode.CHASE:
+    if has_seen_player:
         return CHASE_SPEED
     else:
-        return 0
+        return PROWL_SPEED

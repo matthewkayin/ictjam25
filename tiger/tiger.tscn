@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dljjfsdmxf26j"]
+[gd_scene load_steps=8 format=3 uid="uid://dljjfsdmxf26j"]
 
 [ext_resource type="Script" uid="uid://ddsf0hr8wg8c3" path="res://tiger/tiger.gd" id="1_dc385"]
 [ext_resource type="Texture2D" uid="uid://cqpk2s1lieyfq" path="res://tiger/tiger.png" id="1_hdlk0"]
@@ -45,18 +45,6 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pfdrf"]
 size = Vector2(64, 32)
 
-[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_dc385"]
-points = PackedVector2Array(0, 0, 512, -196, 512, 196)
-
-[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_raakp"]
-points = PackedVector2Array(0, 0, -512, -196, -512, 196)
-
-[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_felac"]
-points = PackedVector2Array(0, 0, -196, -512, 196, -512)
-
-[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_pfdrf"]
-points = PackedVector2Array(0, 0, -196, 512, 196, 512)
-
 [node name="tiger" type="CharacterBody2D"]
 texture_filter = 1
 motion_mode = 1
@@ -78,32 +66,4 @@ autostart = true
 [node name="nav_agent" type="NavigationAgent2D" parent="."]
 debug_enabled = true
 
-[node name="sight_cone_right" type="Area2D" parent="."]
-
-[node name="collider" type="CollisionShape2D" parent="sight_cone_right"]
-shape = SubResource("ConvexPolygonShape2D_dc385")
-
-[node name="sight_cone_left" type="Area2D" parent="."]
-
-[node name="collider" type="CollisionShape2D" parent="sight_cone_left"]
-shape = SubResource("ConvexPolygonShape2D_raakp")
-
-[node name="sight_cone_up" type="Area2D" parent="."]
-
-[node name="collider" type="CollisionShape2D" parent="sight_cone_up"]
-shape = SubResource("ConvexPolygonShape2D_felac")
-
-[node name="sight_cone_down" type="Area2D" parent="."]
-
-[node name="collider" type="CollisionShape2D" parent="sight_cone_down"]
-shape = SubResource("ConvexPolygonShape2D_pfdrf")
-
-[node name="lost_sight_timer" type="Timer" parent="."]
-one_shot = true
-
-[node name="eyes" type="ColorRect" parent="."]
-visible = false
-offset_left = 20.0
-offset_top = -10.0
-offset_right = 27.0
-offset_bottom = -8.0
+[node name="raycasts" type="Node2D" parent="."]
