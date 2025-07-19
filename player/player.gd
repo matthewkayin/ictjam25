@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+signal made_noise(noise_position: Vector2, noise_loudness: int)
+
 enum Mode {
     WALK,
     SNEAK,
@@ -81,7 +83,19 @@ func _physics_process(delta: float) -> void:
 
     # Move
     velocity = direction * get_speed()
-    var _ret = move_and_slide()
+    move_and_slide()
+
+    # Make noise
+    if velocity.length_squared() != 0:
+        var loudness = 0
+        if mode == Mode.WALK:
+            loudness = 1
+        if mode == Mode.SPRINT:
+            loudness = 2
+        if is_in_tall_grass():
+            loudness += 1
+        if loudness != 0:
+            made_noise.emit(global_position, loudness)
 
     # Look
     var desired_camera_offset = Vector2(0, 0)
