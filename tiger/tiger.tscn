@@ -1,0 +1,63 @@
+[gd_scene load_steps=8 format=3 uid="uid://dljjfsdmxf26j"]
+
+[ext_resource type="Script" uid="uid://ddsf0hr8wg8c3" path="res://tiger/tiger.gd" id="1_dc385"]
+[ext_resource type="Texture2D" uid="uid://cqpk2s1lieyfq" path="res://tiger/tiger.png" id="1_hdlk0"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dc385"]
+atlas = ExtResource("1_hdlk0")
+region = Rect2(136, 0, 68, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_raakp"]
+atlas = ExtResource("1_hdlk0")
+region = Rect2(68, 0, 68, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_felac"]
+atlas = ExtResource("1_hdlk0")
+region = Rect2(0, 0, 68, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_felac"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dc385")
+}],
+"loop": true,
+"name": &"chase",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_raakp")
+}],
+"loop": true,
+"name": &"prowl",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_felac")
+}],
+"loop": true,
+"name": &"stalk",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pfdrf"]
+size = Vector2(64, 32)
+
+[node name="tiger" type="CharacterBody2D"]
+texture_filter = 1
+script = ExtResource("1_dc385")
+debug_draw_path = true
+
+[node name="sprite" type="AnimatedSprite2D" parent="."]
+position = Vector2(-2, 0)
+sprite_frames = SubResource("SpriteFrames_felac")
+animation = &"stalk"
+
+[node name="collider" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_pfdrf")
+
+[node name="nav_timer" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true

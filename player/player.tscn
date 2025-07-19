@@ -1,0 +1,127 @@
+[gd_scene load_steps=14 format=3 uid="uid://ceva3l0wtnxma"]
+
+[ext_resource type="Texture2D" uid="uid://b858qg6ytlalv" path="res://player/player.png" id="1_oul6g"]
+[ext_resource type="Script" uid="uid://b667t5mdw27dt" path="res://player/player.gd" id="1_rkbax"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rkbax"]
+atlas = ExtResource("1_oul6g")
+region = Rect2(96, 0, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g1dw6"]
+atlas = ExtResource("1_oul6g")
+region = Rect2(64, 0, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yw30f"]
+atlas = ExtResource("1_oul6g")
+region = Rect2(128, 0, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qjkh3"]
+atlas = ExtResource("1_oul6g")
+region = Rect2(32, 0, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g6k8r"]
+atlas = ExtResource("1_oul6g")
+region = Rect2(0, 0, 32, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rkbax"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rkbax")
+}],
+"loop": false,
+"name": &"attack_down",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g1dw6")
+}],
+"loop": false,
+"name": &"attack_side",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yw30f")
+}],
+"loop": false,
+"name": &"attack_up",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qjkh3")
+}],
+"loop": true,
+"name": &"sneak",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g6k8r")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oul6g"]
+size = Vector2(14, 31)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rkbax"]
+size = Vector2(12, 25)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g1dw6"]
+size = Vector2(11, 26)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yw30f"]
+size = Vector2(20, 7)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qjkh3"]
+size = Vector2(20, 8)
+
+[node name="player" type="CharacterBody2D"]
+script = ExtResource("1_rkbax")
+
+[node name="sprite" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_rkbax")
+animation = &"attack_side"
+
+[node name="collider" type="CollisionShape2D" parent="."]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_oul6g")
+
+[node name="camera" type="Camera2D" parent="."]
+limit_left = 0
+limit_top = 0
+limit_smoothed = true
+drag_left_margin = 0.4
+drag_top_margin = 0.4
+drag_right_margin = 0.4
+drag_bottom_margin = 0.4
+
+[node name="hurtbox_right" type="Area2D" parent="."]
+
+[node name="collider" type="CollisionShape2D" parent="hurtbox_right"]
+position = Vector2(14, 0.5)
+shape = SubResource("RectangleShape2D_rkbax")
+
+[node name="hurtbox_left" type="Area2D" parent="."]
+
+[node name="collider" type="CollisionShape2D" parent="hurtbox_left"]
+position = Vector2(-14, 1)
+shape = SubResource("RectangleShape2D_g1dw6")
+
+[node name="hurtbox_bottom" type="Area2D" parent="."]
+
+[node name="collider" type="CollisionShape2D" parent="hurtbox_bottom"]
+position = Vector2(1, 19)
+shape = SubResource("RectangleShape2D_yw30f")
+
+[node name="hurtbox_top" type="Area2D" parent="."]
+
+[node name="collider" type="CollisionShape2D" parent="hurtbox_top"]
+position = Vector2(0, -19)
+shape = SubResource("RectangleShape2D_qjkh3")
