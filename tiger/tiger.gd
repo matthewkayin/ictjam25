@@ -8,6 +8,9 @@ const CHASE_SPEED: float = 400
 @onready var player = get_node("../player")
 @onready var raycast_anchor = $raycasts
 
+var prowl_path = []
+var prowl_path_index = 0
+
 enum FacingDirection {
     UP,
     RIGHT,
@@ -15,10 +18,16 @@ enum FacingDirection {
     LEFT
 }
 
-var has_seen_player = false
+enum Mode {
+    PROWL,
+    STALK,
+    CHASE
+}
+
 var facing_direction = FacingDirection.DOWN
 var point_of_interest = null
 var raycasts = []
+var mode = Mode.PROWL
 
 func _ready():
     $nav_timer.timeout.connect(on_nav_timer_timeout)
@@ -31,6 +40,11 @@ func _ready():
         raycast_anchor.add_child(raycast)
         raycasts.push_back(raycast)
 
+    var prowl_path_nodes = get_node("../tiger_path").get_children()
+    for path_node in prowl_path_nodes:
+        prowl_path.push_back(path_node.position)
+    start_prowl_pathing()
+
 func can_see_player() -> bool:
     for raycast in raycasts:
         if raycast.is_colliding() and raycast.get_collider() == player and not player.is_in_tall_grass():
@@ -39,10 +53,20 @@ func can_see_player() -> bool:
     return false
 
 func on_nav_timer_timeout():
-    if has_seen_player:
+    if mode == Mode.CHASE:
         nav_agent.set_target_position(player.global_position)
-    elif point_of_interest != null:
+    elif mode == Mode.STALK: 
         nav_agent.set_target_position(point_of_interest)
+    else:
+        nav_agent.set_target_position(prowl_path[prowl_path_index])
+
+func start_prowl_pathing():
+    var nearest_index = 0
+    for index in range(0, prowl_path.size()):
+        if position.distance_to(prowl_path[index]) < position.distance_to(prowl_path[nearest_index]):
+            nearest_index = index
+    prowl_path_index = nearest_index
+    mode = Mode.PROWL
 
 func on_player_made_noise(noise_position: Vector2, noise_loudness: int):
     const NOISE_HEARING_RANGE: float = 256
@@ -53,17 +77,24 @@ func on_player_made_noise(noise_position: Vector2, noise_loudness: int):
         return
     # If it's kinda loud and close, then chase right away
     if noise_loudness == 2 and noise_distance < NOISE_HEARING_RANGE: 
-        has_seen_player = true
+        mode = Mode.CHASE
         return
     # Otherwise, stalk
+    mode = Mode.STALK
     point_of_interest = noise_position
 
 func _physics_process(_delta: float) -> void:
     if can_see_player():
-        has_seen_player = true
+        mode = Mode.CHASE
 
     velocity = global_position.direction_to(nav_agent.get_next_path_position()) * get_speed()
     move_and_slide()
+
+    const TARGET_DISTANCE = 64
+    if mode == Mode.PROWL and global_position.distance_to(prowl_path[prowl_path_index]) < TARGET_DISTANCE:
+        prowl_path_index = (prowl_path_index + 1) % prowl_path.size()
+    elif mode == Mode.STALK and position.distance_to(point_of_interest) < TARGET_DISTANCE:
+        start_prowl_pathing()
 
     # Facing direction
     if velocity.x != 0 && abs(velocity.x) > abs(velocity.y):
@@ -80,13 +111,13 @@ func _physics_process(_delta: float) -> void:
     var raycast_angles = [180, 270, 0, 90]
     raycast_anchor.rotation_degrees = raycast_angles[facing_direction]
 
-    if has_seen_player:
+    if mode == Mode.CHASE:
         sprite.play("chase")
     else:
         sprite.play("prowl")
 
 func get_speed() -> float:
-    if has_seen_player:
+    if mode == Mode.CHASE:
         return CHASE_SPEED
     else:
         return PROWL_SPEED
