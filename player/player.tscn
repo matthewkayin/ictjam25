@@ -761,21 +761,22 @@ script = ExtResource("1_rkbax")
 [node name="sprite" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_rkbax")
-animation = &"idle_side"
+animation = &"crouch_walk_up"
 
 [node name="fire" type="AnimatedSprite2D" parent="."]
+visible = false
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_20bc7")
 animation = &"run_up"
 
 [node name="collider" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(0, 4)
 shape = SubResource("RectangleShape2D_oul6g")
 
 [node name="camera" type="Camera2D" parent="."]
 limit_left = 0
 limit_top = 0
-limit_smoothed = true
 drag_left_margin = 0.4
 drag_top_margin = 0.4
 drag_right_margin = 0.4

@@ -24,6 +24,7 @@ var finished_crouch_start_anim: bool = false
 
 func _ready():
     sprite.animation_finished.connect(on_animation_finished)
+    camera.force_update_scroll()
     set_on_fire(false)
 
 func is_sneaking() -> bool:
@@ -118,3 +119,16 @@ func on_hurtbox_body_entered(body: Node2D) -> void:
 func is_in_tall_grass() -> bool:
     var cell = tilemap.local_to_map(position)
     return tilemap.get_cell_tile_data(0, cell).get_custom_data("tall_grass")
+
+var current_room = null
+func set_current_room(room: Area2D):
+    if room == current_room:
+        return
+
+    var collider = room.get_child(0)
+    camera.limit_left = collider.global_position.x - (collider.shape.size.x / 2)
+    camera.limit_right = collider.global_position.x + (collider.shape.size.x / 2)
+    camera.limit_top = collider.global_position.y - (collider.shape.size.y / 2)
+    camera.limit_bottom = collider.global_position.y + (collider.shape.size.y / 2)
+
+    current_room = room
