@@ -47,7 +47,7 @@ func _ready():
 
 func can_see_player() -> bool:
     for raycast in raycasts:
-        if raycast.is_colliding() and raycast.get_collider() == player and not player.is_in_tall_grass():
+        if raycast.is_colliding() and raycast.get_collider() == player and not (player.is_in_tall_grass() and player.is_sneaking()):
             return true
     
     return false

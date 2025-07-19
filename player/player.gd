@@ -2,12 +2,6 @@ extends CharacterBody2D
 
 signal made_noise(noise_position: Vector2, noise_loudness: int)
 
-enum Mode {
-    WALK,
-    SNEAK,
-    SPRINT
-}
-
 enum FacingDirection {
     UP,
     RIGHT,
@@ -15,21 +9,31 @@ enum FacingDirection {
     LEFT
 }
 
-const SNEAK_SPEED: float = 100
-const WALK_SPEED: float = 200
-const SPRINT_SPEED: float = 400
+const SNEAK_SPEED: float = 150
+const WALK_SPEED: float = 350
 
 const LOOK_DISTANCE: float = 180
 
 @onready var sprite = $sprite
+@onready var fire_sprite = $fire
 @onready var camera = $camera
 @onready var tilemap = get_node("../tilemap")
 
-var mode: Mode = Mode.WALK
 var facing_direction: FacingDirection = FacingDirection.DOWN
+var finished_crouch_start_anim: bool = false
 
 func _ready():
     sprite.animation_finished.connect(on_animation_finished)
+    set_on_fire(false)
+
+func is_sneaking() -> bool:
+    return Input.is_action_pressed("sneak")
+
+func is_on_fire() -> bool:
+    return fire_sprite.visible
+
+func set_on_fire(value: bool) -> void:
+    fire_sprite.visible = value
 
 func _physics_process(delta: float) -> void:
     # Get direction
@@ -50,27 +54,17 @@ func _physics_process(delta: float) -> void:
         else:
             facing_direction = FacingDirection.UP
 
-    # Check movement modes
-    if Input.is_action_pressed("sprint"):
-        mode = Mode.SPRINT
-    elif Input.is_action_pressed("sneak"):
-        mode = Mode.SNEAK
-    else:
-        mode = Mode.WALK
-
     # Move
     velocity = direction * get_speed()
     move_and_slide()
+    for index in range(0, get_slide_collision_count()):
+        if get_slide_collision(index).get_collider().name == "fire":
+            set_on_fire(true)
 
     # Make noise
-    if velocity.length_squared() != 0:
-        var loudness = 0
-        if mode == Mode.WALK:
-            loudness = 1
-        if mode == Mode.SPRINT:
-            loudness = 2
-        if loudness != 0:
-            made_noise.emit(global_position, loudness)
+    var is_moving = velocity.length_squared() != 0
+    if is_moving and not is_sneaking():
+        made_noise.emit(global_position, 1)
 
     # Look
     var desired_camera_offset = Vector2(0, 0)
@@ -78,24 +72,41 @@ func _physics_process(delta: float) -> void:
         desired_camera_offset = direction * LOOK_DISTANCE
     camera.offset = camera.offset.lerp(desired_camera_offset, 4.0 * delta)
 
-    # Update sprite
-    if mode == Mode.SNEAK:
-        sprite.play("sneak")
-    else:
-        sprite.play("walk")
+    update_sprite(is_moving)
+    fire_sprite.animation = sprite.animation
+    fire_sprite.frame = sprite.frame
+    fire_sprite.flip_h = sprite.flip_h
 
+func update_sprite(is_moving: bool):
+    var direction_suffix = ["_up", "_side", "_down", "_side"][facing_direction]
+    var animation: String
+    if Input.is_action_just_pressed("sneak"):
+        finished_crouch_start_anim = false
+        sprite.play("crouch_start" + direction_suffix)
+        return
+
+    if is_sneaking() and not finished_crouch_start_anim:
+        return
+    elif is_sneaking() and is_moving:
+        animation = "crouch_walk"
+    elif is_sneaking() and not is_moving:
+        animation = "crouch_idle"
+    elif is_moving:
+        animation = "run"
+    else:
+        animation = "idle"
+    sprite.play(animation + direction_suffix)
     sprite.flip_h = facing_direction == FacingDirection.LEFT
 
 func on_animation_finished() -> void:
-    pass
+    if not finished_crouch_start_anim and sprite.animation.begins_with("crouch_start"):
+        finished_crouch_start_anim = true
 
 func is_looking() -> bool:
     return Input.is_action_pressed("look")
 
 func get_speed() -> float:
-    if mode == Mode.SPRINT:
-        return SPRINT_SPEED
-    elif mode == Mode.SNEAK:
+    if is_sneaking():
         return SNEAK_SPEED
     else:
         return WALK_SPEED
