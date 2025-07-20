@@ -59,7 +59,9 @@ func init(spawn_point: Vector2, level_flee_position: Vector2, prowl_path_parent:
 
 func can_see_player() -> bool:
     for raycast in raycasts:
-        if raycast.is_colliding() and raycast.get_collider() == player and not (player.is_in_tall_grass() and player.is_sneaking()):
+        if raycast.is_colliding() and raycast.get_collider() == player:
+            print("collide player distance ", global_position.distance_to(player.global_position))
+        if raycast.is_colliding() and raycast.get_collider() == player and not (player.is_in_tall_grass() and player.is_sneaking() and player.global_position.distance_to(global_position) > 64.0):
             return true
     
     return false
@@ -88,22 +90,15 @@ func start_prowl_pathing():
     prowl_path_index = nearest_index
     mode = Mode.PROWL
 
-func on_player_made_noise(noise_position: Vector2, noise_loudness: int):
-    if mode == Mode.FLEE:
+func on_player_made_noise(noise_position: Vector2):
+    if mode == Mode.FLEE or mode == Mode.CHASE:
         return
-    const NOISE_HEARING_RANGE: float = 256
+    const NOISE_HEARING_RANGE: float = 1024
     var noise_distance = global_position.distance_to(noise_position)
-    var hearing_range = NOISE_HEARING_RANGE * noise_loudness
-    # If it's too far away, you can't hear it
-    if noise_distance > hearing_range:
-        return
-    # If it's kinda loud and close, then chase right away
-    if noise_loudness == 2 and noise_distance < NOISE_HEARING_RANGE: 
-        mode = Mode.CHASE
-        return
-    # Otherwise, stalk
-    mode = Mode.STALK
-    point_of_interest = noise_position
+    print(noise_distance)
+    if noise_distance < NOISE_HEARING_RANGE:
+        mode = Mode.STALK
+        point_of_interest = noise_position
 
 func _physics_process(_delta: float) -> void:
     if can_see_player() and not mode == Mode.FLEE:

@@ -5,6 +5,7 @@ extends CanvasLayer
 func _ready():
     kill_animation.stop()
     kill_animation.modulate.a = 0
+    visible = true
 
 func play_kill_animation():
     kill_animation.modulate.a = 1

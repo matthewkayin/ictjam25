@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-signal made_noise(noise_position: Vector2, noise_loudness: int)
+signal made_noise(noise_position: Vector2)
 
 enum FacingDirection {
     UP,
@@ -101,7 +101,7 @@ func _physics_process(delta: float) -> void:
     # Make noise
     var is_moving = velocity.length_squared() != 0
     if is_moving and not is_sneaking():
-        made_noise.emit(global_position, 1)
+        made_noise.emit(global_position)
 
     # Look
     var desired_camera_offset = Vector2(0, 0)
@@ -161,7 +161,8 @@ func on_hurtbox_body_entered(body: Node2D) -> void:
 
 func is_in_tall_grass() -> bool:
     var cell = tilemap.local_to_map(position)
-    return tilemap.get_cell_tile_data(0, cell).get_custom_data("tall_grass")
+    var tile_data = tilemap.get_cell_tile_data(1, cell)
+    return tile_data and tile_data.get_custom_data("tall_grass")
 
 var current_room = null
 func set_current_room(room: Area2D):
