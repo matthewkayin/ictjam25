@@ -176,7 +176,7 @@ func on_hurtbox_body_entered(body: Node2D) -> void:
 
 func is_in_tall_grass() -> bool:
     var cell = tilemap.local_to_map(position)
-    var tile_data = tilemap.get_cell_tile_data(1, cell)
+    var tile_data = tilemap.get_cell_tile_data(2, cell)
     return tile_data and tile_data.get_custom_data("tall_grass")
 
 var current_room = null

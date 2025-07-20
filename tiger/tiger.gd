@@ -96,7 +96,7 @@ func start_prowl_pathing():
 func on_player_made_noise(noise_position: Vector2):
     if mode == Mode.FLEE or mode == Mode.CHASE:
         return
-    const NOISE_HEARING_RANGE: float = 1024
+    const NOISE_HEARING_RANGE: float = 512
     var noise_distance = global_position.distance_to(noise_position)
     if noise_distance < NOISE_HEARING_RANGE:
         mode = Mode.STALK
@@ -163,7 +163,7 @@ func is_in_grass():
     for y in range(cell.y, cell.y + 2):
         for x in range(cell.x, cell.x + 2):
             var map_cell = Vector2i(x, y)
-            var tile_data = tilemap.get_cell_tile_data(1, map_cell)
+            var tile_data = tilemap.get_cell_tile_data(2, map_cell)
             if tile_data and tile_data.get_custom_data("tall_grass"):
                 return true
     return false
