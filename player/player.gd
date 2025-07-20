@@ -131,4 +131,7 @@ func set_current_room(room: Area2D):
     camera.limit_top = collider.global_position.y - (collider.shape.size.y / 2)
     camera.limit_bottom = collider.global_position.y + (collider.shape.size.y / 2)
 
+    # Call on_exit on previous room
+    if current_room != null:
+        current_room.on_exit()
     current_room = room

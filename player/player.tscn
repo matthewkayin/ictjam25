@@ -753,15 +753,18 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oul6g"]
-size = Vector2(14, 31)
+size = Vector2(14, 14)
 
 [node name="player" type="CharacterBody2D"]
+y_sort_enabled = true
 script = ExtResource("1_rkbax")
 
 [node name="sprite" type="AnimatedSprite2D" parent="."]
+y_sort_enabled = true
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_rkbax")
-animation = &"crouch_walk_up"
+animation = &"idle_down"
+offset = Vector2(0, -10)
 
 [node name="fire" type="AnimatedSprite2D" parent="."]
 visible = false
@@ -770,8 +773,7 @@ sprite_frames = SubResource("SpriteFrames_20bc7")
 animation = &"run_up"
 
 [node name="collider" type="CollisionShape2D" parent="."]
-visible = false
-position = Vector2(0, 4)
+position = Vector2(0, 2)
 shape = SubResource("RectangleShape2D_oul6g")
 
 [node name="camera" type="Camera2D" parent="."]

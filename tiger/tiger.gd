@@ -40,7 +40,9 @@ func _ready():
         raycast_anchor.add_child(raycast)
         raycasts.push_back(raycast)
 
-    var prowl_path_nodes = get_node("../tiger_path").get_children()
+func init(spawn_point: Vector2, prowl_path_parent: Node):
+    global_position = spawn_point
+    var prowl_path_nodes = prowl_path_parent.get_children()
     for path_node in prowl_path_nodes:
         prowl_path.push_back(path_node.position)
     start_prowl_pathing()
@@ -51,6 +53,9 @@ func can_see_player() -> bool:
             return true
     
     return false
+
+func is_chasing_player() -> bool:
+    return mode == Mode.CHASE
 
 func on_nav_timer_timeout():
     if mode == Mode.CHASE:
