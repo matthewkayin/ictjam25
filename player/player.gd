@@ -18,10 +18,12 @@ const LOOK_DISTANCE: float = 180
 @onready var fire_sprite = $fire
 @onready var camera = $camera
 @onready var tilemap = get_node("../tilemap")
+@onready var ui = get_node("../ui")
 
 var facing_direction: FacingDirection = FacingDirection.DOWN
 var finished_crouch_start_anim: bool = false
 var held_fire_object = null
+var paused = false
 
 func _ready():
     sprite.animation_finished.connect(on_animation_finished)
@@ -57,10 +59,17 @@ func deposite_fire():
     held_fire_object = null
 
 func kill_player():
+    pause()
+    await ui.play_kill_animation()
     global_position = current_room.get_node("player_spawn").global_position
     current_room.on_body_entered(self)
+    await ui.fade_in()
+    resume()
 
 func _physics_process(delta: float) -> void:
+    if paused:
+        return
+
     # Get direction
     var direction: Vector2 = Vector2(
         Input.get_action_strength("right") - Input.get_action_strength("left"), 
@@ -125,6 +134,13 @@ func update_sprite(is_moving: bool):
         animation = "idle"
     sprite.play(animation + direction_suffix)
     sprite.flip_h = facing_direction == FacingDirection.LEFT
+
+func pause():
+    paused = true
+    sprite.stop()
+
+func resume():
+    paused = false
 
 func on_animation_finished() -> void:
     if not finished_crouch_start_anim and sprite.animation.begins_with("crouch_start"):

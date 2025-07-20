@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://vai57o0mghdh"]
+[gd_scene load_steps=27 format=3 uid="uid://vai57o0mghdh"]
 
 [ext_resource type="Texture2D" uid="uid://d2tj1prjrouf7" path="res://tilemap.png" id="1_7mycd"]
 [ext_resource type="PackedScene" uid="uid://ceva3l0wtnxma" path="res://player/player.tscn" id="1_ig7tw"]
@@ -9,6 +9,8 @@
 [ext_resource type="Script" uid="uid://dtww840r4gcy5" path="res://room.gd" id="6_7mycd"]
 [ext_resource type="Texture2D" uid="uid://c35twkn323aoa" path="res://alter.png" id="6_272bh"]
 [ext_resource type="Texture2D" uid="uid://b8slbod3witcl" path="res://candle.png" id="7_5vw27"]
+[ext_resource type="Texture2D" uid="uid://bis855nwwnoux" path="res://tiger_kill.png" id="10_4c57u"]
+[ext_resource type="Script" uid="uid://bxvlenyi8wywr" path="res://ui.gd" id="10_efxa6"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_272bh"]
 texture = ExtResource("1_7mycd")
@@ -315,6 +317,56 @@ size = Vector2(3191, 1806)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kek77"]
 size = Vector2(50, 30.5)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_efxa6"]
+atlas = ExtResource("10_4c57u")
+region = Rect2(0, 0, 320, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dg77c"]
+atlas = ExtResource("10_4c57u")
+region = Rect2(320, 0, 320, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ycdy4"]
+atlas = ExtResource("10_4c57u")
+region = Rect2(640, 0, 320, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w48qg"]
+atlas = ExtResource("10_4c57u")
+region = Rect2(960, 0, 320, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vivmo"]
+atlas = ExtResource("10_4c57u")
+region = Rect2(1280, 0, 320, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2cqfq"]
+atlas = ExtResource("10_4c57u")
+region = Rect2(1600, 0, 320, 180)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yaehf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_efxa6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dg77c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ycdy4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w48qg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vivmo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2cqfq")
+}],
+"loop": false,
+"name": &"default",
+"speed": 6.0
+}]
+
 [node name="main" type="Node2D"]
 y_sort_enabled = true
 scale = Vector2(4, 4)
@@ -438,3 +490,14 @@ shape = SubResource("RectangleShape2D_kek77")
 
 [node name="player_spawn" type="Node2D" parent="level_center"]
 position = Vector2(4814, 1244)
+
+[node name="ui" type="CanvasLayer" parent="."]
+script = ExtResource("10_efxa6")
+
+[node name="kill_animation" type="AnimatedSprite2D" parent="ui"]
+texture_filter = 1
+scale = Vector2(8, 8)
+sprite_frames = SubResource("SpriteFrames_yaehf")
+frame = 5
+frame_progress = 1.0
+centered = false
