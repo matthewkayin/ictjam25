@@ -1,7 +1,9 @@
-[gd_scene load_steps=47 format=3 uid="uid://dljjfsdmxf26j"]
+[gd_scene load_steps=49 format=3 uid="uid://dljjfsdmxf26j"]
 
 [ext_resource type="Script" uid="uid://ddsf0hr8wg8c3" path="res://tiger/tiger.gd" id="1_dc385"]
 [ext_resource type="Texture2D" uid="uid://cuo7huh8uxd7" path="res://tiger/tiger_spritesheet_down.png" id="2_felac"]
+[ext_resource type="Texture2D" uid="uid://b3g4qwjsdpndn" path="res://tiger_shadow_right.png" id="2_xdb0i"]
+[ext_resource type="Texture2D" uid="uid://bkltls6dby2m2" path="res://tiger_shadow_updown.png" id="3_gwy5d"]
 [ext_resource type="Texture2D" uid="uid://d1cex52fg8scj" path="res://tiger/tiger_spritesheet_right.png" id="3_pfdrf"]
 [ext_resource type="Texture2D" uid="uid://dwedwyq07xoh3" path="res://tiger/tiger_spritesheet_up.png" id="4_xdb0i"]
 
@@ -337,6 +339,14 @@ texture_filter = 1
 motion_mode = 1
 wall_min_slide_angle = 0.0
 script = ExtResource("1_dc385")
+
+[node name="shadow_side" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_xdb0i")
+
+[node name="shadow_updown" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("3_gwy5d")
 
 [node name="sprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(-2, 0)

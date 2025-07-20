@@ -8,6 +8,8 @@ const CHASE_SPEED: float = 500
 @onready var player = get_node("../player")
 @onready var raycast_anchor = $raycasts
 @onready var beatbox = get_node("../beatbox")
+@onready var shadow_side = $shadow_side
+@onready var shadow_updown = $shadow_updown
 
 var prowl_path = []
 var prowl_path_index = 0
@@ -60,8 +62,6 @@ func init(spawn_point: Vector2, level_flee_position: Vector2, prowl_path_parent:
 
 func can_see_player() -> bool:
     for raycast in raycasts:
-        if raycast.is_colliding() and raycast.get_collider() == player:
-            print("collide player distance ", global_position.distance_to(player.global_position))
         if raycast.is_colliding() and raycast.get_collider() == player and not (player.is_in_tall_grass() and player.is_sneaking() and player.global_position.distance_to(global_position) > 64.0):
             return true
     
@@ -96,7 +96,6 @@ func on_player_made_noise(noise_position: Vector2):
         return
     const NOISE_HEARING_RANGE: float = 1024
     var noise_distance = global_position.distance_to(noise_position)
-    print(noise_distance)
     if noise_distance < NOISE_HEARING_RANGE:
         mode = Mode.STALK
         point_of_interest = noise_position
@@ -143,6 +142,9 @@ func _physics_process(_delta: float) -> void:
         animation = "walk"
     sprite.play(animation + direction_suffix)
     sprite.flip_h = facing_direction == FacingDirection.LEFT
+
+    shadow_side.visible = facing_direction == FacingDirection.RIGHT or facing_direction == FacingDirection.LEFT
+    shadow_updown.visible = facing_direction == FacingDirection.UP or facing_direction == FacingDirection.DOWN
 
 func get_speed() -> float:
     if mode == Mode.CHASE or mode == Mode.FLEE:

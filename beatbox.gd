@@ -18,7 +18,6 @@ func stop_music():
 
 func set_track(track: String):
     if current_track == track:
-        print("WARN: tried switching to current track")
         return
     if track == "sneak":
         music_sneak.play(music_chase.get_playback_position())
