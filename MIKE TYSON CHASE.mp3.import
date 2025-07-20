@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://xlfy673pnuwh"
+path="res://.godot/imported/MIKE TYSON CHASE.mp3-1ed81220842f274caece6d6e4daf3465.mp3str"
+
+[deps]
+
+source_file="res://MIKE TYSON CHASE.mp3"
+dest_files=["res://.godot/imported/MIKE TYSON CHASE.mp3-1ed81220842f274caece6d6e4daf3465.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

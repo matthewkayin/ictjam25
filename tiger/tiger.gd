@@ -7,6 +7,7 @@ const CHASE_SPEED: float = 500
 @onready var nav_agent = $nav_agent
 @onready var player = get_node("../player")
 @onready var raycast_anchor = $raycasts
+@onready var beatbox = get_node("../beatbox")
 
 var prowl_path = []
 var prowl_path_index = 0
@@ -101,8 +102,9 @@ func on_player_made_noise(noise_position: Vector2):
         point_of_interest = noise_position
 
 func _physics_process(_delta: float) -> void:
-    if can_see_player() and not mode == Mode.FLEE:
+    if not mode == Mode.CHASE and can_see_player() and not mode == Mode.FLEE:
         mode = Mode.CHASE
+        beatbox.set_track("chase")
 
     velocity = global_position.direction_to(nav_agent.get_next_path_position()) * get_speed()
     move_and_slide()

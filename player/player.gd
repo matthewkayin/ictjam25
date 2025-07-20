@@ -19,6 +19,7 @@ const LOOK_DISTANCE: float = 180
 @onready var camera = $camera
 @onready var tilemap = get_node("../tilemap")
 @onready var ui = get_node("../ui")
+@onready var beatbox = get_node("../beatbox")
 
 var facing_direction: FacingDirection = FacingDirection.DOWN
 var finished_crouch_start_anim: bool = false
@@ -29,6 +30,7 @@ func _ready():
     sprite.animation_finished.connect(on_animation_finished)
     camera.force_update_scroll()
     set_on_fire(false)
+    beatbox.start_music()
 
 func is_sneaking() -> bool:
     return Input.is_action_pressed("sneak")
@@ -48,10 +50,12 @@ func take_fire(fire_object):
         tiger.begin_flee()
     set_on_fire(true)
     held_fire_object = fire_object
+    beatbox.set_track("chase")
 
 func give_fire(alter_object):
     alter_object.fire_accept(held_fire_object)
     set_on_fire(false)
+    beatbox.set_track("sneak")
 
 func deposite_fire():
     set_on_fire(false)
@@ -60,10 +64,12 @@ func deposite_fire():
 
 func kill_player():
     pause()
+    beatbox.stop_music()
     await ui.play_kill_animation()
     global_position = current_room.get_node("player_spawn").global_position
     current_room.on_body_entered(self)
     await ui.fade_in()
+    beatbox.start_music()
     resume()
 
 func _physics_process(delta: float) -> void:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://vai57o0mghdh"]
+[gd_scene load_steps=30 format=3 uid="uid://vai57o0mghdh"]
 
 [ext_resource type="Texture2D" uid="uid://d2tj1prjrouf7" path="res://tilemap.png" id="1_7mycd"]
 [ext_resource type="PackedScene" uid="uid://ceva3l0wtnxma" path="res://player/player.tscn" id="1_ig7tw"]
@@ -11,6 +11,9 @@
 [ext_resource type="Texture2D" uid="uid://b8slbod3witcl" path="res://candle.png" id="7_5vw27"]
 [ext_resource type="Texture2D" uid="uid://bis855nwwnoux" path="res://tiger_kill.png" id="10_4c57u"]
 [ext_resource type="Script" uid="uid://bxvlenyi8wywr" path="res://ui.gd" id="10_efxa6"]
+[ext_resource type="Script" uid="uid://bx2fnsyif672y" path="res://beatbox.gd" id="12_w48qg"]
+[ext_resource type="AudioStream" uid="uid://xlfy673pnuwh" path="res://MIKE TYSON CHASE.mp3" id="13_vivmo"]
+[ext_resource type="AudioStream" uid="uid://c1xjwh3wgdjmh" path="res://MIKE TYSON STEALTH.mp3" id="14_2cqfq"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_272bh"]
 texture = ExtResource("1_7mycd")
@@ -405,6 +408,17 @@ animations = [{
 [node name="main" type="Node2D"]
 y_sort_enabled = true
 scale = Vector2(4, 4)
+
+[node name="beatbox" type="Node" parent="."]
+script = ExtResource("12_w48qg")
+
+[node name="music_chase" type="AudioStreamPlayer" parent="beatbox"]
+stream = ExtResource("13_vivmo")
+parameters/looping = true
+
+[node name="music_sneak" type="AudioStreamPlayer" parent="beatbox"]
+stream = ExtResource("14_2cqfq")
+parameters/looping = true
 
 [node name="tilemap" type="TileMap" parent="."]
 y_sort_enabled = true
