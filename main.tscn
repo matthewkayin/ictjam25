@@ -1,7 +1,8 @@
-[gd_scene load_steps=14 format=3 uid="uid://vai57o0mghdh"]
+[gd_scene load_steps=15 format=3 uid="uid://vai57o0mghdh"]
 
 [ext_resource type="Texture2D" uid="uid://d2tj1prjrouf7" path="res://tilemap.png" id="1_7mycd"]
 [ext_resource type="PackedScene" uid="uid://ceva3l0wtnxma" path="res://player/player.tscn" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://b8d4fo76e2ajm" path="res://nav_mesh.gd" id="3_5vw27"]
 [ext_resource type="PackedScene" uid="uid://ca2ph5puj72v7" path="res://fire.tscn" id="5_7mycd"]
 [ext_resource type="Script" uid="uid://d21mlfiy8m5by" path="res://alter.gd" id="6_5vw27"]
 [ext_resource type="Script" uid="uid://dtww840r4gcy5" path="res://room.gd" id="6_7mycd"]
@@ -240,10 +241,12 @@ texture = ExtResource("1_7mycd")
 0:14/0 = 0
 1:14/0 = 0
 2:14/0 = 0
+2:14/0/terrain = 0
 2:14/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 3:14/0 = 0
 3:14/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 4:14/0 = 0
+4:14/0/terrain = 0
 4:14/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 5:14/0 = 0
 5:14/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, 6, 8, 6, 8, 8, -8, 8)
@@ -254,6 +257,7 @@ texture = ExtResource("1_7mycd")
 8:14/0 = 0
 8:14/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, 6, 8, 6, 8, 8, -8, 8)
 9:14/0 = 0
+9:14/0/terrain = 0
 10:14/0 = 0
 10:14/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, 6, 8, 6, 8, 8, -8, 8)
 11:14/0 = 0
@@ -265,17 +269,23 @@ texture = ExtResource("1_7mycd")
 0:15/0 = 0
 1:15/0 = 0
 2:15/0 = 0
+2:15/0/terrain = 0
 2:15/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 4:15/0 = 0
+4:15/0/terrain = 0
 4:15/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 5:15/0 = 0
+5:15/0/terrain = 0
 5:15/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 6:15/0 = 0
+6:15/0/terrain = 0
 7:15/0 = 0
+7:15/0/terrain = 0
 7:15/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 8:15/0 = 0
 8:15/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 9:15/0 = 0
+9:15/0/terrain = 0
 9:15/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 10:15/0 = 0
 10:15/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
@@ -288,10 +298,13 @@ texture = ExtResource("1_7mycd")
 0:16/0 = 0
 1:16/0 = 0
 2:16/0 = 0
+2:16/0/terrain = 0
 2:16/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 3:16/0 = 0
+3:16/0/terrain = 0
 3:16/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, 6, 8, 6, 8, 8, -8, 8)
 4:16/0 = 0
+4:16/0/terrain = 0
 4:16/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 5:16/0 = 0
 5:16/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
@@ -311,9 +324,9 @@ custom_data_layer_0/type = 1
 sources/0 = SubResource("TileSetAtlasSource_272bh")
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_lquwl"]
-vertices = PackedVector2Array(791.227, 11.7266, 790.508, 439.758, 10.4297, 440.977, 7.5625, 10.5078)
+vertices = PackedVector2Array(828.602, -58.8828, 820.391, 491.094, -88.1797, 476.648, -84.5625, -70.8594)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(-2.5, 0.5, 801.25, 1.75, 800.5, 449.75, 0.5, 451)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-94.5, -81, 1628.75, -66, 1637.75, 507.5, -98.25, 486.5)])
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lquwl"]
 size = Vector2(3191, 1806)
@@ -346,6 +359,7 @@ position = Vector2(857.25, 113)
 [node name="nav_mesh" type="NavigationRegion2D" parent="."]
 y_sort_enabled = true
 navigation_polygon = SubResource("NavigationPolygon_lquwl")
+script = ExtResource("3_5vw27")
 
 [node name="level1" type="Area2D" parent="."]
 scale = Vector2(0.25, 0.25)
