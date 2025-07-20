@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://vai57o0mghdh"]
+[gd_scene load_steps=35 format=3 uid="uid://vai57o0mghdh"]
 
 [ext_resource type="Texture2D" uid="uid://d2tj1prjrouf7" path="res://tilemap.png" id="1_7mycd"]
 [ext_resource type="PackedScene" uid="uid://ceva3l0wtnxma" path="res://player/player.tscn" id="1_ig7tw"]
@@ -7,10 +7,10 @@
 [ext_resource type="PackedScene" uid="uid://ca2ph5puj72v7" path="res://fire.tscn" id="5_7mycd"]
 [ext_resource type="Script" uid="uid://d21mlfiy8m5by" path="res://alter.gd" id="6_5vw27"]
 [ext_resource type="Script" uid="uid://dtww840r4gcy5" path="res://room.gd" id="6_7mycd"]
-[ext_resource type="Texture2D" uid="uid://c35twkn323aoa" path="res://alter.png" id="6_272bh"]
-[ext_resource type="Texture2D" uid="uid://b8slbod3witcl" path="res://candle.png" id="7_5vw27"]
 [ext_resource type="Texture2D" uid="uid://bis855nwwnoux" path="res://tiger_kill.png" id="10_4c57u"]
 [ext_resource type="Script" uid="uid://bxvlenyi8wywr" path="res://ui.gd" id="10_efxa6"]
+[ext_resource type="Texture2D" uid="uid://38if51fosbub" path="res://shrine_rick.png" id="11_w48qg"]
+[ext_resource type="Texture2D" uid="uid://c0106p6c8beo6" path="res://torch_fire.png" id="12_vivmo"]
 [ext_resource type="Script" uid="uid://bx2fnsyif672y" path="res://beatbox.gd" id="12_w48qg"]
 [ext_resource type="AudioStream" uid="uid://xlfy673pnuwh" path="res://MIKE TYSON CHASE.mp3" id="13_vivmo"]
 [ext_resource type="AudioStream" uid="uid://c1xjwh3wgdjmh" path="res://MIKE TYSON STEALTH.mp3" id="14_2cqfq"]
@@ -352,8 +352,44 @@ size = Vector2(3191, 1806)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5vw27"]
 size = Vector2(1920, 1080)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_yaehf"]
+atlas = ExtResource("12_vivmo")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_074og"]
+atlas = ExtResource("12_vivmo")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cegan"]
+atlas = ExtResource("12_vivmo")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_82xsv"]
+atlas = ExtResource("12_vivmo")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_getpj"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yaehf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_074og")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cegan")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_82xsv")
+}],
+"loop": true,
+"name": &"default",
+"speed": 9.0
+}]
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kek77"]
-size = Vector2(50, 30.5)
+size = Vector2(58.5, 44.25)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_efxa6"]
 atlas = ExtResource("10_4c57u")
@@ -473,12 +509,13 @@ position = Vector2(3341, 293)
 position = Vector2(1274, 297)
 
 [node name="fire" parent="level1" instance=ExtResource("5_7mycd")]
-position = Vector2(2075, 716)
+position = Vector2(2417, 551)
 
 [node name="player_spawn" type="Node2D" parent="level1"]
 position = Vector2(2925, 280)
 
 [node name="level_center" type="Area2D" parent="."]
+y_sort_enabled = true
 scale = Vector2(0.25, 0.25)
 script = ExtResource("6_7mycd")
 
@@ -487,46 +524,52 @@ position = Vector2(4170, 540)
 shape = SubResource("RectangleShape2D_5vw27")
 
 [node name="alter" type="StaticBody2D" parent="level_center"]
+y_sort_enabled = true
 texture_filter = 1
 position = Vector2(4169, 542)
 scale = Vector2(4, 4)
 script = ExtResource("6_5vw27")
 
 [node name="sprite" type="Sprite2D" parent="level_center/alter"]
-texture = ExtResource("6_272bh")
+y_sort_enabled = true
+texture = ExtResource("11_w48qg")
 
 [node name="flames" type="Node" parent="level_center/alter"]
 
-[node name="flame1" type="Sprite2D" parent="level_center/alter/flames"]
+[node name="flame1" type="AnimatedSprite2D" parent="level_center/alter/flames"]
 visible = false
 texture_filter = 1
-position = Vector2(4739, 769)
+position = Vector2(4105, 388)
 scale = Vector2(4, 4)
-texture = ExtResource("7_5vw27")
+sprite_frames = SubResource("SpriteFrames_getpj")
+frame_progress = 0.633002
 
-[node name="flame2" type="Sprite2D" parent="level_center/alter/flames"]
+[node name="flame2" type="AnimatedSprite2D" parent="level_center/alter/flames"]
 visible = false
 texture_filter = 1
-position = Vector2(4790, 772)
+position = Vector2(4169, 372)
 scale = Vector2(4, 4)
-texture = ExtResource("7_5vw27")
+sprite_frames = SubResource("SpriteFrames_getpj")
+frame_progress = 0.816906
 
-[node name="flame3" type="Sprite2D" parent="level_center/alter/flames"]
+[node name="flame3" type="AnimatedSprite2D" parent="level_center/alter/flames"]
 visible = false
 texture_filter = 1
-position = Vector2(4846, 769)
+position = Vector2(4201, 419)
 scale = Vector2(4, 4)
-texture = ExtResource("7_5vw27")
+sprite_frames = SubResource("SpriteFrames_getpj")
+frame_progress = 0.816906
 
-[node name="flame4" type="Sprite2D" parent="level_center/alter/flames"]
+[node name="flame4" type="AnimatedSprite2D" parent="level_center/alter/flames"]
 visible = false
 texture_filter = 1
-position = Vector2(4903, 777)
+position = Vector2(4141, 426)
 scale = Vector2(4, 4)
-texture = ExtResource("7_5vw27")
+sprite_frames = SubResource("SpriteFrames_getpj")
+frame_progress = 0.816906
 
 [node name="collider" type="CollisionShape2D" parent="level_center/alter"]
-position = Vector2(0, 17.75)
+position = Vector2(-1.25, 16.875)
 shape = SubResource("RectangleShape2D_kek77")
 
 [node name="player_spawn" type="Node2D" parent="level_center"]

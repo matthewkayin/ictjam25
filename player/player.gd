@@ -54,6 +54,8 @@ func take_fire(fire_object):
     beatbox.set_track("chase")
 
 func give_fire(alter_object):
+    if held_fire_object == null:
+        return
     alter_object.fire_accept(held_fire_object)
     set_on_fire(false)
     beatbox.set_track("sneak")

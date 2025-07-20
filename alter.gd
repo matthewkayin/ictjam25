@@ -15,6 +15,7 @@ extends StaticBody2D
 
 func _ready():
     for flame in flames:
+        flame.play()
         flame.visible = false
 
 func fire_accept(fire_object):
