@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
-const PROWL_SPEED: float = 100
-const CHASE_SPEED: float = 400
+const PROWL_SPEED: float = 200
+const CHASE_SPEED: float = 500
 
 @onready var sprite = $sprite
 @onready var nav_agent = $nav_agent
@@ -32,6 +32,7 @@ var mode = Mode.PROWL
 var flee_position: Vector2
 
 func _ready():
+    $tiger_kill_hurtbox.body_entered.connect(on_hurtbox_body_entered)
     $nav_timer.timeout.connect(on_nav_timer_timeout)
     player.made_noise.connect(on_player_made_noise)
 
@@ -41,6 +42,12 @@ func _ready():
         raycast.rotation = deg_to_rad(angle)
         raycast_anchor.add_child(raycast)
         raycasts.push_back(raycast)
+
+func on_hurtbox_body_entered(body):
+    if body == player and not player.is_on_fire():
+        get_parent().remove_child(self)
+        queue_free()
+        player.kill_player()
 
 func init(spawn_point: Vector2, level_flee_position: Vector2, prowl_path_parent: Node):
     global_position = spawn_point
@@ -128,10 +135,17 @@ func _physics_process(_delta: float) -> void:
     var raycast_angles = [180, 270, 0, 90]
     raycast_anchor.rotation_degrees = raycast_angles[facing_direction]
 
-    if mode == Mode.CHASE or mode == Mode.FLEE:
-        sprite.play("chase")
+    var direction_suffix = ["_up", "_side", "_down", "_side"][facing_direction]
+    var animation: String
+    var is_moving = velocity.length_squared() != 0
+    if not is_moving:
+        animation = "idle"
+    elif mode == Mode.CHASE or mode == Mode.FLEE:
+        animation = "run"
     else:
-        sprite.play("prowl")
+        animation = "walk"
+    sprite.play(animation + direction_suffix)
+    sprite.flip_h = facing_direction == FacingDirection.LEFT
 
 func get_speed() -> float:
     if mode == Mode.CHASE or mode == Mode.FLEE:
