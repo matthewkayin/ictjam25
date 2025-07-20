@@ -82,6 +82,8 @@ func start_prowl_pathing():
     mode = Mode.PROWL
 
 func on_player_made_noise(noise_position: Vector2, noise_loudness: int):
+    if mode == Mode.FLEE:
+        return
     const NOISE_HEARING_RANGE: float = 256
     var noise_distance = global_position.distance_to(noise_position)
     var hearing_range = NOISE_HEARING_RANGE * noise_loudness

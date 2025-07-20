@@ -389,13 +389,13 @@ script = ExtResource("1_rkbax")
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_rkbax")
 animation = &"idle_down"
-offset = Vector2(0, -21)
+offset = Vector2(0, -19)
 
 [node name="fire" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
 sprite_frames = ExtResource("5_qjkh3")
 animation = &"idle_down"
-offset = Vector2(0, -11)
+offset = Vector2(0, -14)
 
 [node name="collider" type="CollisionShape2D" parent="."]
 position = Vector2(0, -7)

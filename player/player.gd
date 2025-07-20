@@ -38,9 +38,18 @@ func set_on_fire(value: bool) -> void:
     fire_sprite.visible = value
 
 func take_fire(fire_object):
+    if fire_object.fire_is_finished():
+        return
     fire_object.fire_douse()
+    var tiger = get_parent().get_node_or_null("tiger")
+    if tiger != null:
+        tiger.begin_flee()
     set_on_fire(true)
     held_fire_object = fire_object
+
+func give_fire(alter_object):
+    alter_object.fire_accept(held_fire_object)
+    set_on_fire(false)
 
 func deposite_fire():
     set_on_fire(false)
@@ -73,6 +82,8 @@ func _physics_process(delta: float) -> void:
         var colliding_object = get_slide_collision(index).get_collider()
         if colliding_object.has_method("fire_douse"): 
             take_fire(colliding_object)
+        if colliding_object.has_method("fire_accept"): 
+            give_fire(colliding_object)
 
     # Make noise
     var is_moving = velocity.length_squared() != 0
