@@ -56,6 +56,13 @@ func deposite_fire():
     held_fire_object.fire_finish()
     held_fire_object = null
 
+func kill_player():
+    global_position = current_room.get_node("player_spawn").global_position
+    var tiger = get_parent().get_node("tiger")
+    get_parent().remove_child(tiger)
+    tiger.queue_free()
+    current_room.on_body_entered(self)
+
 func _physics_process(delta: float) -> void:
     # Get direction
     var direction: Vector2 = Vector2(
@@ -84,6 +91,8 @@ func _physics_process(delta: float) -> void:
             take_fire(colliding_object)
         if colliding_object.has_method("fire_accept"): 
             give_fire(colliding_object)
+        if colliding_object.name == "tiger" and not is_on_fire():
+            kill_player()
 
     # Make noise
     var is_moving = velocity.length_squared() != 0

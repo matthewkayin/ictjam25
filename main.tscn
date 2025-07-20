@@ -1,8 +1,7 @@
-[gd_scene load_steps=15 format=3 uid="uid://vai57o0mghdh"]
+[gd_scene load_steps=14 format=3 uid="uid://vai57o0mghdh"]
 
 [ext_resource type="Texture2D" uid="uid://d2tj1prjrouf7" path="res://tilemap.png" id="1_7mycd"]
 [ext_resource type="PackedScene" uid="uid://ceva3l0wtnxma" path="res://player/player.tscn" id="1_ig7tw"]
-[ext_resource type="Script" uid="uid://b8d4fo76e2ajm" path="res://nav_mesh.gd" id="3_5vw27"]
 [ext_resource type="PackedScene" uid="uid://ca2ph5puj72v7" path="res://fire.tscn" id="5_7mycd"]
 [ext_resource type="Script" uid="uid://d21mlfiy8m5by" path="res://alter.gd" id="6_5vw27"]
 [ext_resource type="Script" uid="uid://dtww840r4gcy5" path="res://room.gd" id="6_7mycd"]
@@ -52,7 +51,6 @@ texture = ExtResource("1_7mycd")
 4:3/0 = 0
 5:3/0 = 0
 6:3/0 = 0
-6:3/0/terrain = 0
 7:3/0 = 0
 8:3/0 = 0
 9:3/0 = 0
@@ -60,17 +58,11 @@ texture = ExtResource("1_7mycd")
 12:3/0 = 0
 13:3/0 = 0
 14:3/0 = 0
-14:3/0/terrain = 0
 15:3/0 = 0
-15:3/0/terrain = 0
 16:3/0 = 0
-16:3/0/terrain = 0
 17:3/0 = 0
-17:3/0/terrain = 0
 18:3/0 = 0
-18:3/0/terrain = 0
 19:3/0 = 0
-19:3/0/terrain = 0
 20:3/0 = 0
 21:3/0 = 0
 22:3/0 = 0
@@ -81,26 +73,18 @@ texture = ExtResource("1_7mycd")
 2:4/0 = 0
 4:4/0 = 0
 5:4/0 = 0
-5:4/0/terrain = 0
 6:4/0 = 0
-6:4/0/terrain = 0
 7:4/0 = 0
-7:4/0/terrain = 0
 8:4/0 = 0
 9:4/0 = 0
 10:4/0 = 0
 12:4/0 = 0
 13:4/0 = 0
 14:4/0 = 0
-14:4/0/terrain = 0
 16:4/0 = 0
-16:4/0/terrain = 0
 17:4/0 = 0
-17:4/0/terrain = 0
 18:4/0 = 0
-18:4/0/terrain = 0
 19:4/0 = 0
-19:4/0/terrain = 0
 20:4/0 = 0
 21:4/0 = 0
 22:4/0 = 0
@@ -112,7 +96,6 @@ texture = ExtResource("1_7mycd")
 4:5/0 = 0
 5:5/0 = 0
 6:5/0 = 0
-6:5/0/terrain = 0
 7:5/0 = 0
 8:5/0 = 0
 9:5/0 = 0
@@ -120,17 +103,11 @@ texture = ExtResource("1_7mycd")
 12:5/0 = 0
 13:5/0 = 0
 14:5/0 = 0
-14:5/0/terrain = 0
 15:5/0 = 0
-15:5/0/terrain = 0
 16:5/0 = 0
-16:5/0/terrain = 0
 17:5/0 = 0
-17:5/0/terrain = 0
 18:5/0 = 0
-18:5/0/terrain = 0
 19:5/0 = 0
-19:5/0/terrain = 0
 21:5/0 = 0
 0:6/0 = 0
 1:6/0 = 0
@@ -241,12 +218,10 @@ texture = ExtResource("1_7mycd")
 0:14/0 = 0
 1:14/0 = 0
 2:14/0 = 0
-2:14/0/terrain = 0
 2:14/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 3:14/0 = 0
 3:14/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 4:14/0 = 0
-4:14/0/terrain = 0
 4:14/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 5:14/0 = 0
 5:14/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, 6, 8, 6, 8, 8, -8, 8)
@@ -257,7 +232,6 @@ texture = ExtResource("1_7mycd")
 8:14/0 = 0
 8:14/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, 6, 8, 6, 8, 8, -8, 8)
 9:14/0 = 0
-9:14/0/terrain = 0
 10:14/0 = 0
 10:14/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, 6, 8, 6, 8, 8, -8, 8)
 11:14/0 = 0
@@ -269,23 +243,17 @@ texture = ExtResource("1_7mycd")
 0:15/0 = 0
 1:15/0 = 0
 2:15/0 = 0
-2:15/0/terrain = 0
 2:15/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 4:15/0 = 0
-4:15/0/terrain = 0
 4:15/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 5:15/0 = 0
-5:15/0/terrain = 0
 5:15/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 6:15/0 = 0
-6:15/0/terrain = 0
 7:15/0 = 0
-7:15/0/terrain = 0
 7:15/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 8:15/0 = 0
 8:15/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 9:15/0 = 0
-9:15/0/terrain = 0
 9:15/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 10:15/0 = 0
 10:15/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
@@ -298,13 +266,10 @@ texture = ExtResource("1_7mycd")
 0:16/0 = 0
 1:16/0 = 0
 2:16/0 = 0
-2:16/0/terrain = 0
 2:16/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 3:16/0 = 0
-3:16/0/terrain = 0
 3:16/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, 6, 8, 6, 8, 8, -8, 8)
 4:16/0 = 0
-4:16/0/terrain = 0
 4:16/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 5:16/0 = 0
 5:16/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
@@ -324,8 +289,8 @@ custom_data_layer_0/type = 1
 sources/0 = SubResource("TileSetAtlasSource_272bh")
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_lquwl"]
-vertices = PackedVector2Array(828.602, -58.8828, 820.391, 491.094, -88.1797, 476.648, -84.5625, -70.8594)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+vertices = PackedVector2Array(826, 474.25, 1627.58, 497.367, -88.1797, 476.617, -26.2578, 474, 266.5, 361.672, 759.211, 406, 41.9219, 406.492, 150.281, 362.578, 39.3203, 57.6484, 149.719, 181.969, -84.5625, -70.9062, -25.9922, -25.6562, 1618.9, -56.0781, 773.32, -32.8516, 826, 86.25, 768.719, 50.9062, 437.719, 86.25, 266.5, 182.281, 438.281, 297.469, 602, 298.031, 758.281, 169.75, 602, 182.281, 506.172, 169.992, 506.07, 182.023)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(4, 5, 6, 7), PackedInt32Array(7, 6, 8, 9), PackedInt32Array(3, 2, 10, 11), PackedInt32Array(11, 10, 12, 13), PackedInt32Array(12, 1, 0, 14), PackedInt32Array(13, 12, 14, 15), PackedInt32Array(15, 14, 16, 8), PackedInt32Array(9, 8, 16, 17), PackedInt32Array(17, 16, 18, 4), PackedInt32Array(5, 4, 18, 19), PackedInt32Array(20, 5, 19, 21), PackedInt32Array(22, 20, 21, 23)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(-94.5, -81, 1628.75, -66, 1637.75, 507.5, -98.25, 486.5)])
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lquwl"]
@@ -359,7 +324,14 @@ position = Vector2(857.25, 113)
 [node name="nav_mesh" type="NavigationRegion2D" parent="."]
 y_sort_enabled = true
 navigation_polygon = SubResource("NavigationPolygon_lquwl")
-script = ExtResource("3_5vw27")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="nav_mesh"]
+vertices = PackedVector2Array(159.75, 192, 256.5, 192.25, 256.5, 351.75, 160.25, 352.5)
+affect_navigation_mesh = true
+
+[node name="NavigationObstacle2D2" type="NavigationObstacle2D" parent="nav_mesh"]
+vertices = PackedVector2Array(447.75, 96.25, 448.25, 287.5, 592, 288, 592, 192.25, 496, 192, 496.25, 160, 768.25, 159.75, 769.25, 416, 32, 416.5, 29.25, 47.75, 759.25, 41, 762.75, -22.75, -16, -15.75, -16.25, 464, 816, 464.25, 816, 96.25)
+affect_navigation_mesh = true
 
 [node name="level1" type="Area2D" parent="."]
 scale = Vector2(0.25, 0.25)
@@ -402,6 +374,9 @@ position = Vector2(372, 316)
 [node name="fire" parent="level1" instance=ExtResource("5_7mycd")]
 position = Vector2(2075, 716)
 
+[node name="player_spawn" type="Node2D" parent="level1"]
+position = Vector2(2925, 280)
+
 [node name="level_center" type="Area2D" parent="."]
 scale = Vector2(0.25, 0.25)
 script = ExtResource("6_7mycd")
@@ -424,27 +399,34 @@ texture = ExtResource("6_272bh")
 [node name="flame1" type="Sprite2D" parent="level_center/alter/flames"]
 visible = false
 texture_filter = 1
-position = Vector2(4797, 868)
+position = Vector2(4739, 769)
+scale = Vector2(4, 4)
 texture = ExtResource("7_5vw27")
 
 [node name="flame2" type="Sprite2D" parent="level_center/alter/flames"]
 visible = false
 texture_filter = 1
-position = Vector2(4809, 868)
+position = Vector2(4790, 772)
+scale = Vector2(4, 4)
 texture = ExtResource("7_5vw27")
 
 [node name="flame3" type="Sprite2D" parent="level_center/alter/flames"]
 visible = false
 texture_filter = 1
-position = Vector2(4824, 869)
+position = Vector2(4846, 769)
+scale = Vector2(4, 4)
 texture = ExtResource("7_5vw27")
 
 [node name="flame4" type="Sprite2D" parent="level_center/alter/flames"]
 visible = false
 texture_filter = 1
-position = Vector2(4838, 869)
+position = Vector2(4903, 777)
+scale = Vector2(4, 4)
 texture = ExtResource("7_5vw27")
 
 [node name="collider" type="CollisionShape2D" parent="level_center/alter"]
 position = Vector2(0, 17.75)
 shape = SubResource("RectangleShape2D_kek77")
+
+[node name="player_spawn" type="Node2D" parent="level_center"]
+position = Vector2(4814, 1244)

@@ -64,6 +64,7 @@ wait_time = 0.5
 autostart = true
 
 [node name="nav_agent" type="NavigationAgent2D" parent="."]
+path_postprocessing = 1
 debug_enabled = true
 
 [node name="raycasts" type="Node2D" parent="."]
