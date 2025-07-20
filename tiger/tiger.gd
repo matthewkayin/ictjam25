@@ -21,13 +21,15 @@ enum FacingDirection {
 enum Mode {
     PROWL,
     STALK,
-    CHASE
+    CHASE,
+    FLEE
 }
 
 var facing_direction = FacingDirection.DOWN
 var point_of_interest = null
 var raycasts = []
 var mode = Mode.PROWL
+var flee_position: Vector2
 
 func _ready():
     $nav_timer.timeout.connect(on_nav_timer_timeout)
@@ -40,8 +42,9 @@ func _ready():
         raycast_anchor.add_child(raycast)
         raycasts.push_back(raycast)
 
-func init(spawn_point: Vector2, prowl_path_parent: Node):
+func init(spawn_point: Vector2, level_flee_position: Vector2, prowl_path_parent: Node):
     global_position = spawn_point
+    flee_position = level_flee_position
     var prowl_path_nodes = prowl_path_parent.get_children()
     for path_node in prowl_path_nodes:
         prowl_path.push_back(path_node.position)
@@ -57,8 +60,13 @@ func can_see_player() -> bool:
 func is_chasing_player() -> bool:
     return mode == Mode.CHASE
 
+func begin_flee():
+    mode = Mode.FLEE
+
 func on_nav_timer_timeout():
-    if mode == Mode.CHASE:
+    if mode == Mode.FLEE:
+        nav_agent.set_target_position(flee_position)
+    elif mode == Mode.CHASE:
         nav_agent.set_target_position(player.global_position)
     elif mode == Mode.STALK: 
         nav_agent.set_target_position(point_of_interest)
@@ -89,13 +97,15 @@ func on_player_made_noise(noise_position: Vector2, noise_loudness: int):
     point_of_interest = noise_position
 
 func _physics_process(_delta: float) -> void:
-    if can_see_player():
+    if can_see_player() and not mode == Mode.FLEE:
         mode = Mode.CHASE
 
     velocity = global_position.direction_to(nav_agent.get_next_path_position()) * get_speed()
     move_and_slide()
 
     const TARGET_DISTANCE = 64
+    if mode == Mode.FLEE and global_position.distance_to(flee_position) < TARGET_DISTANCE:
+        queue_free()
     if mode == Mode.PROWL and global_position.distance_to(prowl_path[prowl_path_index]) < TARGET_DISTANCE:
         prowl_path_index = (prowl_path_index + 1) % prowl_path.size()
     elif mode == Mode.STALK and position.distance_to(point_of_interest) < TARGET_DISTANCE:
@@ -116,13 +126,13 @@ func _physics_process(_delta: float) -> void:
     var raycast_angles = [180, 270, 0, 90]
     raycast_anchor.rotation_degrees = raycast_angles[facing_direction]
 
-    if mode == Mode.CHASE:
+    if mode == Mode.CHASE or mode == Mode.FLEE:
         sprite.play("chase")
     else:
         sprite.play("prowl")
 
 func get_speed() -> float:
-    if mode == Mode.CHASE:
+    if mode == Mode.CHASE or mode == Mode.FLEE:
         return CHASE_SPEED
     else:
         return PROWL_SPEED

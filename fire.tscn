@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://ca2ph5puj72v7"]
+
+[ext_resource type="Texture2D" uid="uid://1igtr1fcl0m1" path="res://fire.png" id="1_2pqqt"]
+[ext_resource type="Script" uid="uid://cdgci54qslsf2" path="res://fire.gd" id="1_5ltu8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5ltu8"]
+size = Vector2(32, 13)
+
+[node name="fire" type="StaticBody2D"]
+texture_filter = 1
+script = ExtResource("1_5ltu8")
+
+[node name="sprite" type="Sprite2D" parent="."]
+texture = ExtResource("1_2pqqt")
+
+[node name="collider" type="CollisionShape2D" parent="."]
+position = Vector2(0, 9.5)
+shape = SubResource("RectangleShape2D_5ltu8")

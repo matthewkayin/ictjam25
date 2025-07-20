@@ -21,6 +21,7 @@ const LOOK_DISTANCE: float = 180
 
 var facing_direction: FacingDirection = FacingDirection.DOWN
 var finished_crouch_start_anim: bool = false
+var held_fire_object = null
 
 func _ready():
     sprite.animation_finished.connect(on_animation_finished)
@@ -35,6 +36,16 @@ func is_on_fire() -> bool:
 
 func set_on_fire(value: bool) -> void:
     fire_sprite.visible = value
+
+func take_fire(fire_object):
+    fire_object.fire_douse()
+    set_on_fire(true)
+    held_fire_object = fire_object
+
+func deposite_fire():
+    set_on_fire(false)
+    held_fire_object.fire_finish()
+    held_fire_object = null
 
 func _physics_process(delta: float) -> void:
     # Get direction
@@ -59,8 +70,9 @@ func _physics_process(delta: float) -> void:
     velocity = direction * get_speed()
     move_and_slide()
     for index in range(0, get_slide_collision_count()):
-        if get_slide_collision(index).get_collider().name == "fire":
-            set_on_fire(true)
+        var colliding_object = get_slide_collision(index).get_collider()
+        if colliding_object.has_method("fire_douse"): 
+            take_fire(colliding_object)
 
     # Make noise
     var is_moving = velocity.length_squared() != 0

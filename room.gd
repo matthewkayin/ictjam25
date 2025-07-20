@@ -2,13 +2,19 @@ extends Area2D
 
 var is_finished = false
 var tiger = null
+@onready var fire_node = get_node_or_null("fire")
 
 func _ready():
     body_entered.connect(on_body_entered)
 
+func level_is_finished() -> bool:
+    if fire_node == null:
+        return false
+    return fire_node.fire_is_finished()
+
 func on_body_entered(body):
     if body.has_method("set_current_room"):
-        if not is_finished:
+        if not level_is_finished():
             var tiger_spawn_node = get_node_or_null("tiger_spawn")
             if tiger_spawn_node != null:
                 var tiger_scene = load("res://tiger/tiger.tscn")
