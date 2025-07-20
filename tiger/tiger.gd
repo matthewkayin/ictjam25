@@ -10,6 +10,8 @@ const CHASE_SPEED: float = 500
 @onready var beatbox = get_node("../beatbox")
 @onready var shadow_side = $shadow_side
 @onready var shadow_updown = $shadow_updown
+@onready var grass_sprite = $grass
+@onready var tilemap = get_node("../tilemap")
 
 var prowl_path = []
 var prowl_path_index = 0
@@ -142,6 +144,10 @@ func _physics_process(_delta: float) -> void:
         animation = "walk"
     sprite.play(animation + direction_suffix)
     sprite.flip_h = facing_direction == FacingDirection.LEFT
+    grass_sprite.animation = sprite.animation
+    grass_sprite.frame = sprite.frame
+    grass_sprite.flip_h = sprite.flip_h
+    grass_sprite.visible = is_in_grass()
 
     shadow_side.visible = facing_direction == FacingDirection.RIGHT or facing_direction == FacingDirection.LEFT
     shadow_updown.visible = facing_direction == FacingDirection.UP or facing_direction == FacingDirection.DOWN
@@ -151,3 +157,13 @@ func get_speed() -> float:
         return CHASE_SPEED
     else:
         return PROWL_SPEED
+
+func is_in_grass():
+    var cell = tilemap.local_to_map(position - Vector2(16, 16))
+    for y in range(cell.y, cell.y + 2):
+        for x in range(cell.x, cell.x + 2):
+            var map_cell = Vector2i(x, y)
+            var tile_data = tilemap.get_cell_tile_data(1, map_cell)
+            if tile_data and tile_data.get_custom_data("tall_grass"):
+                return true
+    return false

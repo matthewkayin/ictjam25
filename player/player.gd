@@ -20,6 +20,7 @@ const LOOK_DISTANCE: float = 180
 @onready var tilemap = get_node("../tilemap")
 @onready var ui = get_node("../ui")
 @onready var beatbox = get_node("../beatbox")
+@onready var grass_sprite = $grass
 
 var facing_direction: FacingDirection = FacingDirection.DOWN
 var finished_crouch_start_anim: bool = false
@@ -53,6 +54,8 @@ func take_fire(fire_object):
     beatbox.set_track("chase")
 
 func give_fire(alter_object):
+    if held_fire_object == null:
+        return
     alter_object.fire_accept(held_fire_object)
     set_on_fire(false)
     beatbox.set_track("sneak")
@@ -116,9 +119,15 @@ func _physics_process(delta: float) -> void:
     camera.offset = camera.offset.lerp(desired_camera_offset, 4.0 * delta)
 
     update_sprite(is_moving)
+
     fire_sprite.animation = sprite.animation
     fire_sprite.frame = sprite.frame
     fire_sprite.flip_h = sprite.flip_h
+
+    grass_sprite.animation = sprite.animation
+    grass_sprite.frame = sprite.frame
+    grass_sprite.flip_h = sprite.flip_h
+    grass_sprite.visible = is_in_tall_grass()
 
 func update_sprite(is_moving: bool):
     var direction_suffix = ["_up", "_side", "_down", "_side"][facing_direction]
